@@ -1,5 +1,4 @@
 export default function Popup(props) {
-  //children é o conteúdo de popup
   const { onClose, title, children } = props;
 
   return (
