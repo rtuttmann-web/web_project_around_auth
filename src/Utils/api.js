@@ -24,12 +24,7 @@ class Api {
   getInitialCards() {
   return fetch(`${this._baseUrl}/cards`, {
     headers: this._headers,
-  })
-    .then(this._checkResponse)
-    .then((data) => {
-      console.log("CARDS DATA:", data);
-      return data;
-    });
+  }).then(this._checkResponse);
 }
 
   getAppInfo() {
