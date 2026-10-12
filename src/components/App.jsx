@@ -12,9 +12,10 @@ import Footer from "./Footer/Footer";
 import Login from "./Login/Login";
 import Register from "./Register/Register";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
+import InfoTooltip from "./InfoTooltip/InfoTooltip";
 import api from "../utils/api";
 import * as auth from "../utils/auth";
-import { setToken, getToken } from "../utils/token";
+import { setToken, getToken, removeToken } from "../utils/token";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
 function App() {
@@ -23,6 +24,8 @@ function App() {
   const [cards, setCards] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -69,9 +72,15 @@ function App() {
     auth
       .register(email, password)
       .then(() => {
+        setIsSuccess(true);
+        setIsInfoTooltipOpen(true);
         navigate("/signin");
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error(error);
+        setIsSuccess(false);
+        setIsInfoTooltipOpen(true);
+      });
   }
 
   function handleLogin({ email, password }) {
@@ -90,7 +99,24 @@ function App() {
           navigate(redirectPath);
         }
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error(error);
+        setIsSuccess(false);
+        setIsInfoTooltipOpen(true);
+      });
+  }
+
+  function handleSignOut() {
+    removeToken();
+    setIsLoggedIn(false);
+    setUserEmail("");
+    setCurrentUser(null);
+    setCards([]);
+    navigate("/signin");
+  }
+
+  function handleCloseInfoTooltip() {
+    setIsInfoTooltipOpen(false);
   }
 
   function handleOpenPopup(popup) {
@@ -162,7 +188,11 @@ function App() {
       value={{ currentUser, handleUpdateUser, handleUpdateAvatar }}
     >
       <div className="page__content">
-        <Header />
+        <Header
+          isLoggedIn={isLoggedIn}
+          userEmail={userEmail}
+          onSignOut={handleSignOut}
+        />
         <Routes>
           <Route
             path="/"
@@ -210,6 +240,11 @@ function App() {
             }
           />
         </Routes>
+        <InfoTooltip
+          isOpen={isInfoTooltipOpen}
+          isSuccess={isSuccess}
+          onClose={handleCloseInfoTooltip}
+        />
       </div>
     </CurrentUserContext.Provider>
   );
