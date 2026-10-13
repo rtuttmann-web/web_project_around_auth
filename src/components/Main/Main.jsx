@@ -18,7 +18,7 @@ export default function Main({
   const { currentUser } = useContext(CurrentUserContext);
 
   const newCardPopup = {
-    title: "New card",
+    title: "Novo local",
     children: <NewCard onAddPlaceSubmit={onAddPlaceSubmit} />,
   };
   const editProfilePopup = { title: "Editar perfil", children: <EditProfile /> };

@@ -26,6 +26,7 @@ function App() {
   const [userEmail, setUserEmail] = useState("");
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isTokenChecked, setIsTokenChecked] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,6 +36,7 @@ function App() {
     const jwt = getToken();
 
     if (!jwt) {
+      setIsTokenChecked(true);
       return;
     }
 
@@ -44,7 +46,8 @@ function App() {
         setUserEmail(data.email);
         setIsLoggedIn(true);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => setIsTokenChecked(true));
   }, []);
 
   // Dados do EUA Afora: só depois de logado
@@ -181,6 +184,10 @@ function App() {
         handleClosePopup();
       })
       .catch((error) => console.error(error));
+  }
+
+  if (!isTokenChecked) {
+    return null;
   }
 
   return (

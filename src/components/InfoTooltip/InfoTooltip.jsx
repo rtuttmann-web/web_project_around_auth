@@ -26,7 +26,7 @@ export default function InfoTooltip({ isOpen, isSuccess, onClose }) {
           src={isSuccess ? successIcon : failIcon}
           alt={isSuccess ? "Sucesso" : "Erro"}
         />
-                <p className="info-tooltip__text">
+        <p className="info-tooltip__text">
           {isSuccess ? (
             "Vitória! Você precisa se registrar."
           ) : (

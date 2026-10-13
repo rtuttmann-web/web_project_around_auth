@@ -16,7 +16,6 @@ export default function EditProfile() {
   };
 
   const handleSubmit = (event) => {
-  console.log("handleSubmit disparou!");
   event.preventDefault();
   handleUpdateUser({ name, about: description });
 };
