@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-  useLocation,
-} from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Header from "./Header/Header";
 import Main from "./Main/Main";
 import Footer from "./Footer/Footer";
@@ -29,9 +23,8 @@ function App() {
   const [isTokenChecked, setIsTokenChecked] = useState(false);
 
   const navigate = useNavigate();
-  const location = useLocation();
 
-  // Login automático: verifica o token salvo ao abrir o site
+  // Verifica se há um JWT ao montar o App
   useEffect(() => {
     const jwt = getToken();
 
@@ -50,7 +43,7 @@ function App() {
       .finally(() => setIsTokenChecked(true));
   }, []);
 
-  // Dados do EUA Afora: só depois de logado
+  // Dados do usuário e cartões: carregados quando o usuário entra
   useEffect(() => {
     if (!isLoggedIn) {
       return;
@@ -71,7 +64,7 @@ function App() {
       .catch((error) => console.error(error));
   }, [isLoggedIn]);
 
-  function handleRegistration({ email, password }) {
+  function handleRegister({ email, password }) {
     auth
       .register(email, password)
       .then(() => {
@@ -98,8 +91,7 @@ function App() {
           setToken(data.token);
           setUserEmail(email);
           setIsLoggedIn(true);
-          const redirectPath = location.state?.from?.pathname || "/";
-          navigate(redirectPath);
+          navigate("/");
         }
       })
       .catch((error) => {
@@ -223,17 +215,21 @@ function App() {
           <Route
             path="/signin"
             element={
-              <ProtectedRoute isLoggedIn={isLoggedIn} anonymous>
-                <Login handleLogin={handleLogin} />
-              </ProtectedRoute>
+              isLoggedIn ? (
+                <Navigate to="/" replace />
+              ) : (
+                <Login onLogin={handleLogin} />
+              )
             }
           />
           <Route
             path="/signup"
             element={
-              <ProtectedRoute isLoggedIn={isLoggedIn} anonymous>
-                <Register handleRegistration={handleRegistration} />
-              </ProtectedRoute>
+              isLoggedIn ? (
+                <Navigate to="/" replace />
+              ) : (
+                <Register onRegister={handleRegister} />
+              )
             }
           />
           <Route

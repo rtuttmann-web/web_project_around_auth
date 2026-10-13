@@ -1,17 +1,21 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function Login({ handleLogin }) {
-  const [data, setData] = useState({ email: "", password: "" });
+export default function Login({ onLogin }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setData((prevData) => ({ ...prevData, [name]: value }));
+  function handleEmailChange(e) {
+    setEmail(e.target.value);
+  }
+
+  function handlePasswordChange(e) {
+    setPassword(e.target.value);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleLogin(data);
+    onLogin({ email, password });
   }
 
   return (
@@ -23,8 +27,8 @@ export default function Login({ handleLogin }) {
           type="email"
           name="email"
           placeholder="E-mail"
-          value={data.email}
-          onChange={handleChange}
+          value={email}
+          onChange={handleEmailChange}
           required
         />
         <input
@@ -32,8 +36,8 @@ export default function Login({ handleLogin }) {
           type="password"
           name="password"
           placeholder="Senha"
-          value={data.password}
-          onChange={handleChange}
+          value={password}
+          onChange={handlePasswordChange}
           required
         />
         <button className="auth__button" type="submit">
