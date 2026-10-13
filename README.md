@@ -17,6 +17,20 @@ Continuação do projeto "EUA Afora" (React). Agora toda a funcionalidade do apl
 - **InfoTooltip**: janela modal que informa se o registro foi bem-sucedido ou se ocorreu um erro
 - Funcionalidades do projeto anterior: editar perfil e avatar, adicionar, curtir e excluir cartões
 
+## Capturas de tela
+
+### Login
+![Tela de login](docs/screenshots/login.png)
+
+### Registro
+![Tela de registro](docs/screenshots/register.png)
+
+### Página principal (usuário autorizado)
+![Página principal com e-mail e botão Sair no cabeçalho](docs/screenshots/main.png)
+
+### InfoTooltip
+![Modal de registro bem-sucedido](docs/screenshots/tooltip.png)
+
 ## Tecnologias
 
 - React 18 + Vite
